@@ -14,7 +14,73 @@ public class App {
 
     public String bestCharge(List<String> inputs) {
         //TODO: write code here
+        String outString="";
+        int money=0;//总钱数
+        int money_01=0;//第一种支付金额
+        int moneySave_01=0;//第一种节约费用
+        int money_02=0;//第二种支付金额
+        int moneySave_02=0;//第二种节约费用
+        for(int i=0;i<inputs.size();i++){
+            String input=inputs.get(i);
+            input=input.replace(" ","");
+            String type=input.split("x")[0];
+            int number=Integer.parseInt(input.split("x")[1]);
+            if(type.equals("ITEM0001")){
+                money=money+18*number;
+                moneySave_02=moneySave_02+9*number;
+                outString=outString+"黄焖鸡 x "+number+ " = " +18*number+"元\n";
+            }
+            if(type.equals("ITEM0022")){
+                money=money+8*number;
+                moneySave_02=moneySave_02+4*number;
+                outString=outString+"凉皮 x "+number+ " = " +8*number+"元\n";
+            }
+            if (type.equals("ITEM0013")){
+                money=money+6*number;
+                outString=outString+"肉夹馍 x "+number+ " = " +6*number+"元\n";
+            }
+            if (type.equals("ITEM0030")){
+                money=money+2*number;
+                outString=outString+"冰锋 x "+number+ " = " +2*number+"元\n";
+            }
+        }
+        if(money>=30){
+            money_01=money-6;
+            moneySave_01=6;
+        }
+        if(moneySave_02>0){
+            money_02=money-moneySave_02;
+        }
+        if(money_01>0||money_02>0){
+            if(moneySave_01>=moneySave_02){//使用第一种
+                  outString="============= 订餐明细 =============\n" +
+                          outString +
+                          "-----------------------------------\n" +
+                          "使用优惠:\n" +
+                          "满30减6元，省6元\n" +
+                          "-----------------------------------\n" +
+                          "总计："+money_01+"元\n" +
+                          "===================================";
+            }else{//使用第二种
+                outString="============= 订餐明细 =============\n" +
+                        outString +
+                        "-----------------------------------\n" +
+                        "使用优惠:\n" +
+                        "指定菜品半价(黄焖鸡，凉皮)，省"+moneySave_02+"元\n" +
+                        "-----------------------------------\n" +
+                        "总计："+money_02+"元\n" +
+                        "===================================";
 
-        return null;
+            }
+
+        }else{//没有打折
+             outString="============= 订餐明细 =============\n" +
+                     outString +
+                     "-----------------------------------\n" +
+                     "总计："+money+"元\n" +
+                     "===================================";
+        }
+
+        return outString;
     }
 }
